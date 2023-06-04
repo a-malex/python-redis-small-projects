@@ -116,7 +116,12 @@ def register(username,firstname,lastname):
     mydb.commit()
     cursor.close()
     mydb.close()
-    redis.hset(f"user:{username}", mapping={"firstname": f"{firstname}", "lastname" : f"{lastname}"})
+    redis.hset(f"user:{username}", 
+               mapping={
+                   "firstname": f"{firstname}", 
+                   "lastname" : f"{lastname}"
+                   }
+               )
     redis.setex(f"user_register:{username}", 60, "yes")
     return f"user {username} registered succesfully"
 
