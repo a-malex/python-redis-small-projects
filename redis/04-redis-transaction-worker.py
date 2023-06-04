@@ -13,10 +13,27 @@ try:
         ports={ '6379/tcp': 6379 },
         detach=True
     )
-    
+    sleep(20)
 except Exception as e:
     print(e)
+
+# Loop until Redis container is ready
+while True:
+    try:
+        # Ping Redis server
+        response = redis.ping()
+
+        # If response is PONG, Redis container is ready
+        if response == True:
+            print("Redis container is ready!")
+            break
+    except redis.exceptions.ConnectionError:
+        pass
     
+    # Wait 1 second before trying again
+    sleep(1)
+    
+
 # set jobs for test
 
 redis.hset("job:1", mapping={"stage": "0", "status": "new"})
